@@ -5,3 +5,24 @@
 // if there are no more guesses the player loses
 // if there are no more letters to be guessed the player wins
 
+var words = [""];
+
+var correctWord = words[Math.floor(Math.random() * words.length)];
+
+console.log(correctWord);
+
+var userGuess = 10;
+var userKey = "";
+var matchedTotal = 0;
+var toDo = true;
+
+var getWord = function () {
+    return correctWord;
+};
+while (toDo) {
+    toDo = false;
+
+    var userInput = function() {
+        var letterInput
+    }
+}

@@ -23,6 +23,54 @@ while (toDo) {
     toDo = false;
 
     var userInput = function() {
-        var letterInput
+        var letterInput = "";
+
+        $(document).keyup(function(e)
+        {
+            let letterInput = e.userKey
+        })
+    }
+
+    for (var i = 0; i < correctWord.length; i++){
+
+        var correctLetter = $("<div>");
+
+        correctLetter.addClass("letter");
+  
+        correctLetter.attr("data-letter", correctWord[i]);
+    
+        correctLetter.text(correctWord[i]);
+    
+        $("#letter").append(correctLetter);
+    }
+
+    var rightLetters = function checkInput(userInput){
+
+        var matches = 0;
+
+        for (var i = 0; i < correctWord.length; i++) {
+
+            if (userInput === correctWord[i]) {
+            
+                matches++;
+            }
+
+            return matches;
+        }
+    }
+
+    userGursses--;
+
+    if (matchedLetters > 0) {
+        matchedTotal += matchedLetters;
+    }
+
+    if (matchedLetters === correctWord.length)
+    {
+
+    } else {
+        if (userGuess <= 0) {
+            
+        }
     }
 }

@@ -5,72 +5,88 @@
 // if there are no more guesses the player loses
 // if there are no more letters to be guessed the player wins
 
-var words = [""];
+var words = ["valve", "nintendo", "microsoft", "sony", "infinityward", "blizzard"];
 
-var correctWord = words[Math.floor(Math.random() * words.length)];
+var correctWord = "";
+var correctLetters = []
+var spaces = 0;
+var spacesAndCorrect = [];
+var wrongGuess = [];
 
-console.log(correctWord);
+var wins = 0;
+var losses = 0;
+var guessesRemaining = 9;
 
-var userGuess = 10;
-var userKey = "";
-var matchedTotal = 0;
-var toDo = true;
+function Game() {
+    correctWord = words[Math.floor(Math.random() * words.length)];
 
-var getWord = function () {
-    return correctWord;
-};
-while (toDo) {
-    toDo = false;
+    correctLetters = correctWord.split("");
 
-    var userInput = function() {
-        var letterInput = "";
+    spaces = correctLetters.length;
 
-        $(document).keyup(function(e)
-        {
-            let letterInput = e.userKey
-        })
+    for (var i = 0; i < spaces; i++) {
+        spacesAndCorrect.push("_");
     }
 
-    for (var i = 0; i < correctWord.length; i++){
+    document.getElementById("currentWord").innerHTML = "  " + spacesAndCorrect.join("  ");
 
-        var correctLetter = $("<div>");
+    console.log(correctWord);
+    console.log(correctLetters)
+    console.log(spaces)
+    console.log(spacesAndCorrect)
+}
 
-        correctLetter.addClass("letter");
-  
-        correctLetter.attr("data-letter", correctWord[i]);
-    
-        correctLetter.text(correctWord[i]);
-    
-        $("#letter").append(correctLetter);
+function reset() {
+    guessesRemaining = 9;
+    wrongGuess = [];
+    spacesAndCorrect = [];
+    Game()
+}
+
+function userGuess(letter) {
+    var correctLetter = false;
+    for (var i = 0; i < spaces; i++) {
+        if (correctWord[i] == letter) {
+            correctLetter = true;
+        }
     }
-
-    var rightLetters = function checkInput(userInput){
-
-        var matches = 0;
-
-        for (var i = 0; i < correctWord.length; i++) {
-
-            if (userInput === correctWord[i]) {
-            
-                matches++;
+    if (correctLetter) {
+        for (var i = 0; i < spaces; i++) {
+            if (correctWord[i] == letter) {
+                spacesAndCorrect[i] = letter;
             }
-
-            return matches;
         }
     }
-
-    userGursses--;
-
-    if (matchedLetters > 0) {
-        matchedTotal += matchedLetters;
+    else {
+        wrongGuess.push(letter);
+        guessesRemaining--;
     }
+    console.log(spacesAndCorrect);
+}
 
-    if (matchedLetters === correctWord.length)
-    {
+function complete() {
+    console.log("wins:" + wins + "| losses:" + losses + "| guesses left:" + guessesRemaining)
 
-    } else {
-        if (userGuess <= 0) {
-            
-        }
+    if (correctLetters.toString() == spacesAndCorrect.toString()) {
+        wins++;
+        reset()
+        document.getElementById("winstracker").innerHTML = " " + wins;
+
+    } else if (guessesRemaining === 0) {
+        losses++;
+        reset()
+        document.getElementById("losetracker").innerHTML = " " + losses;
     }
+    document.getElementById("currentWord").innerHTML = "  " + spacesAndCorrect.join(" ");
+    document.getElementById("guessesremaining").innerHTML = " " + guessesRemaining;
+}
+
+Game()
+
+document.onkeyup = function (event) {
+    var guesses = String.fromCharCode(event.keyCode).toLowerCase();
+    userGuess(guesses);
+    complete();
+    console.log(guesses);
+    document.getElementById("playerguesses").innerHTML = "  " + wrongGuess.join(" ");
 }
